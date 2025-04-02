@@ -12,6 +12,25 @@
   "activationEvents": [],
   "main": "./out/extension.js",
   "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "git-commit-generator-sidebar",
+          "title": "Git Commit Generator",
+          "icon": "resources/icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "git-commit-generator-sidebar": [
+        {
+          "id": "git-commit-generator-view",
+          "name": "Git Commit Generator",
+          "type": "webview",
+          "icon" : "resources/icon.svg"
+        }
+      ]
+    },
     "commands": [
       {
         "command": "comm-it.generate",
