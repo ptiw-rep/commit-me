@@ -229,7 +229,7 @@ private async callBackendAPI(diff: string, userInstructions: string): Promise<st
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Git Commit Generator</title>
+        <title>Commit-it</title>
         <style>
             body {
                 padding: 15px;
