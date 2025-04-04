@@ -147,7 +147,6 @@ class GitCommitGeneratorViewProvider implements vscode.WebviewViewProvider {
         if (!diff) {
             throw new Error("No staged changes found");
         }
-
         // Simulate an API call to the backend
         const backendResponse = await this.callBackendAPI(diff, userInstructions);
 
@@ -165,16 +164,37 @@ class GitCommitGeneratorViewProvider implements vscode.WebviewViewProvider {
     }
 }
 
-// Simulated backend API call
+
 private async callBackendAPI(diff: string, userInstructions: string): Promise<string> {
-  // Simulate a delay for the API call
-  return new Promise((resolve) => {
-      setTimeout(() => {
-          // Generate a mock response from the backend
-          const message = this.generateCommitMessageFromDiff(diff, userInstructions);
-          resolve(message);
-      }, 2000); // Simulate 2-second delay
-  });
+  const url = 'http://127.0.0.1:8000/generate';
+  const DELIMITER = "-----END_OF_DIFF-----"; // Unique delimiter
+
+  try {
+    // Concatenate diff and userInstructions with a unique delimiter
+    const concatenatedText = `${diff}${DELIMITER}${userInstructions}`;
+
+    // Perform the POST request using fetch
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'text/plain', // Specify plain text content type
+      },
+      body: concatenatedText, // Send the concatenated string as the body
+    });
+
+    // Check if the response status is OK (status code 200-299)
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    // Parse and return the response as text
+    const result = await response.text();
+    return result;
+  } catch (error) {
+    // Handle any errors that occurred during the request
+    console.error('Error calling backend API:', error);
+    throw error; // Re-throw the error to propagate it further if needed
+  }
 }
 
   private generateCommitMessageFromDiff(
